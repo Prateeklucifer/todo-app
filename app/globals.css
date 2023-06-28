@@ -2,26 +2,265 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.container {
+  width: 80vw;
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+}
+
+.logo img {
+  width: 80rem;
+}
+
+.heading {
+  color: #475569;
+  font-size: 1.2rem;
+  font-family: "Varela Round", sans-serif;
+  padding: 4rem;
+  letter-spacing: 0.125rem;
+}
+
+.search-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0.8rem;
+}
+
+.btn-add {
+  background-color: #6366f1;
+  color: white;
+  padding: 0.5rem 0.8rem;
+}
+
+.btn-add:hover {
+  background-color: #4f46e5;
+}
+
+.searchBar {
+  margin-right: -1rem;
+  padding: 0.4rem 1rem;
+  width: 62%;
+  outline: none;
+  /* outline-color: #818cf8; */
+  border: 3px solid #d1d5db;
+  font-weight: bolder;
+  letter-spacing: 0.125rem;
+  font-size: 1rem;
+}
+
+.searchBar:focus {
+  border: 3px solid #818cf8;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4rem;
+}
+
+.todo {
+  display: flex;
+  align-items: center;
+  padding-top: 4rem;
+  justify-content: space-between;
+  width: 62%;
+  margin: auto;
+}
+
+.text {
+  font-weight: bolder;
+  font-size: 1.6rem;
+  color: #334155;
+  letter-spacing: 0.125rem;
+}
+
+.btn-green {
+  background-color: #22c55e;
+  color: white;
+  padding: 0.6rem;
+  margin-inline: 0.3rem;
+}
+
+.btn-green:hover {
+  background-color: #16a34a;
+}
+
+.btn-red {
+  background-color: #ef4444;
+  color: white;
+  padding: 0.6rem;
+  margin-inline: 0.3rem;
+}
+
+.btn-red:hover {
+  background-color: #dc2626;
+}
+
+.btn-blue {
+  background-color: #6366f1;
+  color: white;
+  padding: 0.6rem;
+  margin-inline: 0.3rem;
+}
+
+.btn-blue:hover {
+  background-color: #4f46e5;
+}
+
+.horizontal-line {
+  width: 62%;
+  margin-top: 0.8rem;
+  background-color: #e5e7eb;
+  height: 1px;
+  border: none;
+}
+
+.rounded {
+  border-radius: 0.4rem;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1440px) {
+  .heading {
+    padding: 3rem;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@media screen and (max-width: 1024px) {
+  .searchBar {
+    width: 74%;
+  }
+
+  .heading {
+    padding: 2.4rem;
+    font-size: 1.1rem;
+  }
+
+  .todo-list {
+    padding-top: 1.8rem;
+  }
+
+  .todo {
+    width: 74%;
+    font-size: 0.7rem;
+  }
+
+  .text {
+    font-size: 1.5rem;
+  }
+
+  .horizontal-line {
+    width: 74%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .heading {
+    padding: 2rem;
+    font-size: 1rem;
+  }
+
+  .searchBar {
+    width: 84%;
+    font-size: 0.8rem;
+  }
+
+  .search-content {
+    padding: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .todo-list {
+    padding-top: 0.4rem;
+  }
+
+  .todo {
+    width: 84%;
+    padding-top: 3.8rem;
+  }
+
+  .text {
+    font-size: 1.3rem;
+  }
+
+  .horizontal-line {
+    width: 84%;
+  }
+
+  .btn-green {
+    margin-inline: 0.2rem;
+  }
+  .btn-red {
+    margin-inline: 0.2rem;
+  }
+  .btn-blue {
+    margin-inline: 0.2rem;
+  }
+
+  .rounded {
+    border-radius: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 568px) {
+  .heading {
+    padding: 1.8rem;
+  }
+
+  .search-content {
+    padding: 0.2rem;
+  }
+
+  .todo {
+    padding-top: 3rem;
+    font-size: 0.5rem;
+  }
+
+  .text {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .searchBar {
+    width: -webkit-fill-available;
+  }
+
+  .todo {
+    width: 92%;
+  }
+
+  .horizontal-line {
+    width: 92%;
+  }
+
+  .text {
+    margin-right: 0.8rem;
+  }
+}
+
+.udl{
+  text-decoration: line-through;
 }

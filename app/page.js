@@ -1,113 +1,157 @@
-import Image from 'next/image'
+"use client";
+
+import Script from "next/script";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+  const [todo, setTodo] = useState([]);
+  const [update, setUpdate] = useState(Math.random());
+
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("todo"));
+    setTodo(data);
+  }, [update]);
+
+  const [data, setData] = useState("");
+
+  let todos = [];
+
+  async function addTodo() {
+    todos.push(data);
+
+    if (localStorage.getItem("todo") === null) {
+      localStorage.setItem("todo", JSON.stringify(todos));
+      setUpdate(Math.random());
+      setData("");
+    } else {
+      let new_todo = JSON.parse(localStorage.getItem("todo"));
+
+      new_todo.push(data);
+
+      localStorage.setItem("todo", JSON.stringify(new_todo));
+      setUpdate(Math.random());
+      setData("");
+    }
+  }
+
+  const [edit, setEdit] = useState(false);
+  const [index, setIndex] = useState(false);
+  const [compleated, setCompleated] = useState(false);
+  if (edit) {
+    return (
+      <div class="flex h-[100vh] w-full items-center justify-center py-10 relative">
+        <div class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white z-10">
+          <div class="w-full">
+            <div class="m-8 my-20 max-w-[400px] mx-auto px-2">
+              <div class="mb-8">
+                <h1 class="mb-4 text-xl md:text-2xl font-extrabold text-[#475569]">
+                  Change todo
+                </h1>
+                <input
+                  type="search"
+                  class="text-slate-700 rounded-md md:rounded-full p-3 w-full font-semibold outline-[#818cf8] border-2"
+                  value={data}
+                  onChange={(e) => {
+                    setData(e.target.value);
+                  }}
+                />
+              </div>
+              <div class="space-y-4">
+                <button
+                  onClick={() => {
+                    let updated_todo = todo
+                    updated_todo[index] = data
+
+                    localStorage.setItem("todo", JSON.stringify(updated_todo))
+
+                    setEdit(!edit);
+                    setData('')
+                  }}
+                  class="p-3 bg-[#6366f1] hover:bg-[#818cf8] rounded-md md:rounded-full text-white w-full font-semibold"
+                >
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+        <div
+          onClick={() => {
+            setEdit(!edit);
+          }}
+          className="absolute inset-0 bg-black/20"
+        ></div>
       </div>
+    );
+  } else {
+    return (
+      <>
+        <div className="header">
+          <div className="heading">
+            <h1 className="pointer text-4xl">Todo List</h1>
+          </div>
+          <div className="search-content ">
+            <input
+              className="searchBar"
+              type="search"
+              value={data}
+              onChange={(e) => setData(e.target.value)}
+              placeholder="Add New Task..."
+            />
+            <i
+              className="fa-solid fa-2x fa-plus btn-add pointer"
+              onClick={addTodo}
+            ></i>
+          </div>
+        </div>
+        {todo.length ? (
+          <div className="todo-list">
+            {todo.map((todos, index) => (
+              <div key={index} className="w-full">
+                <div className="todo">
+                <div className={`text pointer ${todos.completed ? "udl" : ""}`}>{todos}</div>
+                  <div className="logo">
+                    <i onClick={()=>{
+                      setCompleated(!compleated)
+                    }} className="fa-solid fa-check btn-green rounded pointer"></i>
+                    <i
+                      onClick={() => {
+                        let new_todo = todo;
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+                        new_todo.splice(new_todo.indexOf(todos), 1);
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+                        localStorage.setItem("todo", JSON.stringify(new_todo));
+                        setUpdate(Math.random());
+                      }}
+                      className="fa-solid fa-trash btn-red rounded pointer"
+                    ></i>
+                    <i
+                      onClick={() => {
+                        setIndex(todo.indexOf(todos));
+                        setEdit(!edit);
+                        setData('')
+                      }}
+                      className="fa-solid fa-pencil btn-blue rounded pointer"
+                    ></i>
+                  </div>
+                </div>
+                <hr className="horizontal-line m-auto" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center">
+            <div className="text-lg md:text-xl lg:text-2xl text-slate-400 mt-12">
+              No todos
+            </div>
+          </div>
+        )}
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+        <Script
+          src="https://kit.fontawesome.com/e9e378fafe.js"
+          crossorigin="anonymous"
+        ></Script>
+      </>
+    );
+  }
 }
