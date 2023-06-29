@@ -7,8 +7,8 @@ const varela_round = Varela_Round({
 });
 
 export const metadata = {
-  title: "todo - App",
-  description: "A simple todo have which have CRUD opration.",
+  title: "TodoList",
+  description: "A simple project to demonstrate my CRUD opration skills.",
 };
 
 export default function RootLayout({ children }) {

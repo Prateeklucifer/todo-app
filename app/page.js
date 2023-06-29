@@ -26,12 +26,6 @@ export default function Home() {
 
   async function addTodo() {
     todos.push({ task: data, compleated: false });
-
-    if (localStorage.getItem("todo") === null) {
-      localStorage.setItem("todo", JSON.stringify(todos));
-      setUpdate(Math.random());
-      setData("");
-    } else {
       let new_todo = JSON.parse(localStorage.getItem("todo"));
 
       new_todo.push({ task: data, compleated: false });
@@ -40,7 +34,6 @@ export default function Home() {
       setUpdate(Math.random());
       setData("");
     }
-  }
 
   const [edit, setEdit] = useState(false);
   const [index, setIndex] = useState(false);
@@ -86,6 +79,7 @@ export default function Home() {
         <div
           onClick={() => {
             setEdit(!edit);
+            setData("");
           }}
           className="absolute inset-0 bg-black/20"
         ></div>
