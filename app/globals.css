@@ -89,7 +89,7 @@
 .text {
   font-weight: bolder;
   font-size: 1.6rem;
-  color: #334155;
+  /* color: #334155; */
   letter-spacing: 0.125rem;
 }
 
@@ -259,8 +259,4 @@
   .text {
     margin-right: 0.8rem;
   }
-}
-
-.udl{
-  text-decoration: line-through;
 }

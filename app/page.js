@@ -8,8 +8,16 @@ export default function Home() {
   const [update, setUpdate] = useState(Math.random());
 
   useEffect(() => {
-    let data = JSON.parse(localStorage.getItem("todo"));
-    setTodo(data);
+    if (localStorage.getItem("todo") == null) {
+      let test = [{ task: "add task here", compleated: false }];
+
+      localStorage.setItem("todo", JSON.stringify(test));
+      let data = JSON.parse(localStorage.getItem("todo"));
+      setTodo(data);
+    } else {
+      let data = JSON.parse(localStorage.getItem("todo"));
+      setTodo(data);
+    }
   }, [update]);
 
   const [data, setData] = useState("");
@@ -17,7 +25,7 @@ export default function Home() {
   let todos = [];
 
   async function addTodo() {
-    todos.push(data);
+    todos.push({ task: data, compleated: false });
 
     if (localStorage.getItem("todo") === null) {
       localStorage.setItem("todo", JSON.stringify(todos));
@@ -26,7 +34,7 @@ export default function Home() {
     } else {
       let new_todo = JSON.parse(localStorage.getItem("todo"));
 
-      new_todo.push(data);
+      new_todo.push({ task: data, compleated: false });
 
       localStorage.setItem("todo", JSON.stringify(new_todo));
       setUpdate(Math.random());
@@ -36,38 +44,38 @@ export default function Home() {
 
   const [edit, setEdit] = useState(false);
   const [index, setIndex] = useState(false);
-  const [compleated, setCompleated] = useState(false);
+
   if (edit) {
     return (
-      <div class="flex h-[100vh] w-full items-center justify-center py-10 relative">
-        <div class="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white z-10">
-          <div class="w-full">
-            <div class="m-8 my-20 max-w-[400px] mx-auto px-2">
-              <div class="mb-8">
-                <h1 class="mb-4 text-xl md:text-2xl font-extrabold text-[#475569]">
+      <div className="flex h-[100vh] w-full items-center justify-center py-10 relative">
+        <div className="max-h-full w-full max-w-xl overflow-y-auto sm:rounded-2xl bg-white z-10">
+          <div className="w-full">
+            <div className="m-8 my-20 max-w-[400px] mx-auto px-2">
+              <div className="mb-8">
+                <h1 className="mb-4 text-xl md:text-2xl font-extrabold text-[#475569]">
                   Change todo
                 </h1>
                 <input
                   type="search"
-                  class="text-slate-700 rounded-md md:rounded-full p-3 w-full font-semibold outline-[#818cf8] border-2"
+                  className="text-slate-700 rounded-md md:rounded-full p-3 w-full font-semibold outline-[#818cf8] border-2"
                   value={data}
                   onChange={(e) => {
                     setData(e.target.value);
                   }}
                 />
               </div>
-              <div class="space-y-4">
+              <div className="space-y-4">
                 <button
                   onClick={() => {
-                    let updated_todo = todo
-                    updated_todo[index] = data
+                    let updated_todo = todo;
+                    updated_todo[index].task = data;
 
-                    localStorage.setItem("todo", JSON.stringify(updated_todo))
+                    localStorage.setItem("todo", JSON.stringify(updated_todo));
 
                     setEdit(!edit);
-                    setData('')
+                    setData("");
                   }}
-                  class="p-3 bg-[#6366f1] hover:bg-[#818cf8] rounded-md md:rounded-full text-white w-full font-semibold"
+                  className="p-3 bg-[#6366f1] hover:bg-[#818cf8] rounded-md md:rounded-full text-white w-full font-semibold"
                 >
                   Update
                 </button>
@@ -109,11 +117,21 @@ export default function Home() {
             {todo.map((todos, index) => (
               <div key={index} className="w-full">
                 <div className="todo">
-                <div className={`text pointer ${todos.completed ? "udl" : ""}`}>{todos}</div>
+                  <div className={`text pointer ${todos.compleated? "line-through text-slate-500": " text-[#334155] "}`}>{todos.task}</div>
                   <div className="logo">
-                    <i onClick={()=>{
-                      setCompleated(!compleated)
-                    }} className="fa-solid fa-check btn-green rounded pointer"></i>
+                    <i
+                      onClick={() => {
+                        let updated_todo = todo;
+                        updated_todo[index].compleated =
+                          !updated_todo[index].compleated;
+                        localStorage.setItem(
+                          "todo",
+                          JSON.stringify(updated_todo)
+                        );
+                        setUpdate(Math.random());
+                      }}
+                      className="fa-solid fa-check btn-green rounded pointer"
+                    ></i>
                     <i
                       onClick={() => {
                         let new_todo = todo;
@@ -129,7 +147,7 @@ export default function Home() {
                       onClick={() => {
                         setIndex(todo.indexOf(todos));
                         setEdit(!edit);
-                        setData('')
+                        setData(todos.task);
                       }}
                       className="fa-solid fa-pencil btn-blue rounded pointer"
                     ></i>
